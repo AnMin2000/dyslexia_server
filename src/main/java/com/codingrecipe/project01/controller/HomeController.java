@@ -4,8 +4,12 @@ import com.codingrecipe.project01.dto.Camera;
 import com.codingrecipe.project01.dto.User;
 import com.codingrecipe.project01.service.HomeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -17,20 +21,7 @@ public class HomeController {
     //[GET : SELECT], [POST : INSERT], [PUT : UPDATE], [DELETE : DELETE]
 
     private final HomeService homeService;
-    @ResponseBody
-    @GetMapping("/")
-    public String index(){
-        return "1234";
-    }
 
-    @ResponseBody
-    @PostMapping(value="/android")
-    public String androidResponse(@RequestBody User user) {
-
-        System.out.println("Connection from Android");
-
-        return "12";
-    }
 
     @ResponseBody
     @PostMapping(value="/insert")
@@ -41,10 +32,14 @@ public class HomeController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/shot")
-    public String shot(@RequestBody Camera camera){
-        System.out.println("카메라" + camera.getAlbumId());
-        homeService.shot(camera);
-        return "shot";
+    @PostMapping("/shot")
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        System.out.println(file);
+        String result = homeService.uploadImage(file);
+        if (result.contains("성공")) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
