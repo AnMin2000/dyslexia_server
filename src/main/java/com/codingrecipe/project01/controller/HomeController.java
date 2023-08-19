@@ -31,6 +31,7 @@ public class HomeController {
         return "12";
     }
 
+    @ResponseBody
     @PostMapping(value="/insert")
     public String insert(@RequestBody UserDTO user){
         System.out.println("id1: " + user.getId() + ", pw: " + user.getPassword());
