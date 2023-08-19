@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -24,21 +25,20 @@ public class HomeService {
         homeRepository.insert(user);
     }
 
-    @Value("${uploadPath}")
+    @Value("C:/Users/user/Desktop/Album/")
     private String uploadPath;
-    public String uploadImage(MultipartFile file) {
+    public void uploadImage(MultipartFile file) {
         try {
             // 이미지를 서버에 저장
             String fileName = file.getOriginalFilename();
             File imageFile = new File(uploadPath + File.separator + fileName);
+
             FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
             fileOutputStream.write(file.getBytes());
             fileOutputStream.close();
 
-            return "이미지가 성공적으로 저장되었습니다.";
         } catch (IOException e) {
-            e.printStackTrace();
-            return "이미지 저장 중 오류가 발생했습니다.";
+            throw new RuntimeException(e);
         }
     }
 }

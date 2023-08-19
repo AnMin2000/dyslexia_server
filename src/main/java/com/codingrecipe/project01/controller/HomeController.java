@@ -1,10 +1,8 @@
 package com.codingrecipe.project01.controller;
 
-import com.codingrecipe.project01.dto.Camera;
 import com.codingrecipe.project01.dto.User;
 import com.codingrecipe.project01.service.HomeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,14 +30,10 @@ public class HomeController {
     }
 
     @ResponseBody
-    @PostMapping("/shot")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+    @PostMapping(value="/shot")
+    public String uploadImage(@RequestParam("image") MultipartFile file) {
         System.out.println(file);
-        String result = homeService.uploadImage(file);
-        if (result.contains("성공")) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        homeService.uploadImage(file);
+        return "shot";
     }
 }
