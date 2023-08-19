@@ -1,6 +1,7 @@
 package com.codingrecipe.project01.controller;
 
-import com.codingrecipe.project01.dto.UserDTO;
+import com.codingrecipe.project01.dto.Camera;
+import com.codingrecipe.project01.dto.User;
 import com.codingrecipe.project01.service.HomeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class HomeController {
 
     @ResponseBody
     @PostMapping(value="/android")
-    public String androidResponse(@RequestBody UserDTO user) {
+    public String androidResponse(@RequestBody User user) {
 
         System.out.println("Connection from Android");
 
@@ -33,11 +34,17 @@ public class HomeController {
 
     @ResponseBody
     @PostMapping(value="/insert")
-    public String insert(@RequestBody UserDTO user){
+    public String insert(@RequestBody User user){
         System.out.println("id1: " + user.getId() + ", pw: " + user.getPassword());
         homeService.insert(user);
         //System.out.println("id: " + user.getId() + ", pw: " + user.getPassword());
         return "insert";
     }
 
+    @ResponseBody
+    @PostMapping(value = "/shot")
+    public String shot(@RequestBody Camera camera){
+        System.out.println("카메라" + camera.getAlbumId());
+        return "shot";
+    }
 }

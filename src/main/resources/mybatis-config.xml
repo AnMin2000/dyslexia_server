@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="com.codingrecipe.project01.dto.UserDTO" alias="board"/>
+        <typeAlias type="com.codingrecipe.project01.dto.User" alias="board"/>
 <!--        <typeAlias type="com.codingrecipe.board.dto.CommentDTO" alias="comment"></typeAlias>-->
     </typeAliases>
 </configuration>
