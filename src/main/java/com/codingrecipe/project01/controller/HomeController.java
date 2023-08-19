@@ -37,7 +37,6 @@ public class HomeController {
     public String insert(@RequestBody User user){
         System.out.println("id1: " + user.getId() + ", pw: " + user.getPassword());
         homeService.insert(user);
-        //System.out.println("id: " + user.getId() + ", pw: " + user.getPassword());
         return "insert";
     }
 
@@ -45,6 +44,7 @@ public class HomeController {
     @PostMapping(value = "/shot")
     public String shot(@RequestBody Camera camera){
         System.out.println("카메라" + camera.getAlbumId());
+        homeService.shot(camera);
         return "shot";
     }
 }
