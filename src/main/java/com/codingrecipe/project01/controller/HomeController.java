@@ -36,4 +36,5 @@ public class HomeController {
         homeService.uploadImage(file);
         return "shot";
     }
+    
 }

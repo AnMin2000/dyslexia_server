@@ -1,0 +1,9 @@
+<!--<servlet-mapping>-->
+
+<!--    <servlet-name>dispatcher</servlet-name>-->
+
+<!--    <url-pattern>/test123/session.jsp</url-pattern>-->
+
+<!--    <url-pattern>*.do</url-pattern>-->
+
+<!--</servlet-mapping>-->
