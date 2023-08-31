@@ -3,10 +3,12 @@ package com.codingrecipe.project01.service;
 import com.codingrecipe.project01.dto.User;
 import com.codingrecipe.project01.repository.HomeRepository;
 import lombok.RequiredArgsConstructor;
+import net.sourceforge.tess4j.ITesseract;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 
 
 import java.io.File;
@@ -37,8 +39,29 @@ public class HomeService {
             fileOutputStream.write(file.getBytes());
             fileOutputStream.close();
 
+            String ocrResult = performOCR(imageFile);
+
+            System.out.println(ocrResult);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+    private String performOCR(File imageFile) {
+        ITesseract tesseract = new Tesseract();
+
+        // Tesseract OCR의 데이터 파일이 위치한 리소스 경로를 설정
+        String tessDataPath = "C:\\Users\\user\\IdeaProjects\\server_test\\src\\main\\resources";
+        tesseract.setDatapath(tessDataPath);
+
+        // 한국어 언어 설정
+        tesseract.setLanguage("kor");
+
+        try {
+            String ocrResult = tesseract.doOCR(imageFile);
+            return ocrResult;
+        } catch (TesseractException e) {
+            throw new RuntimeException("OCR processing error", e);
+        }
+    }
+
 }

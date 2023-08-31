@@ -20,7 +20,6 @@ public class HomeController {
 
     private final HomeService homeService;
 
-
     @ResponseBody
     @PostMapping(value="/insert")
     public String insert(@RequestBody User user){
@@ -36,5 +35,4 @@ public class HomeController {
         homeService.uploadImage(file);
         return "shot";
     }
-    
 }
