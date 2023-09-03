@@ -50,7 +50,7 @@ public class HomeService {
         ITesseract tesseract = new Tesseract();
 
         // Tesseract OCR의 데이터 파일이 위치한 리소스 경로를 설정
-        String tessDataPath = "C:\\Users\\user\\IdeaProjects\\server_test\\src\\main\\resources";
+        String tessDataPath = "C:/Program Files/Tesseract-OCR/tessdata";
         tesseract.setDatapath(tessDataPath);
 
         // 한국어 언어 설정
