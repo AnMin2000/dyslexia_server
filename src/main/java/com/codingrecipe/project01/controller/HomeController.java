@@ -20,6 +20,7 @@ public class HomeController {
 
     private final HomeService homeService;
 
+
     @ResponseBody
     @PostMapping(value="/insert")
     public String insert(@RequestBody User user){
@@ -39,12 +40,8 @@ public class HomeController {
     @ResponseBody
     @PostMapping(value="/ocr")
     public String Ocr() {
-        homeService.Ocr();
-        return "ocr";
-    }
-    @GetMapping("/getOcrResult")
-    public String getOcrResult() {
-        String ocrResult = homeService.Ocr(); // Call your OCR method here
+        String ocrResult = homeService.Ocr();
+        System.out.println(ocrResult);
         return ocrResult;
     }
 }
