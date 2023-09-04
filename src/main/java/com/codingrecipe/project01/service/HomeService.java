@@ -21,7 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class HomeService {
     private final HomeRepository homeRepository;
-
+    File imageFile;
     public void insert(User user){
         System.out.println("id2: " + user.getId() + ", pw: " + user.getPassword());
         homeRepository.insert(user);
@@ -33,19 +33,18 @@ public class HomeService {
         try {
             // 이미지를 서버에 저장
             String fileName = file.getOriginalFilename();
-            File imageFile = new File(uploadPath + File.separator + fileName);
+            imageFile = new File(uploadPath + File.separator + fileName);
 
             FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
             fileOutputStream.write(file.getBytes());
             fileOutputStream.close();
 
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public String Ocr(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        File imageFile = new File(uploadPath + File.separator + fileName);
+    public String Ocr() {
 
         ITesseract tesseract = new Tesseract();
 

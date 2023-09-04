@@ -38,9 +38,13 @@ public class HomeController {
 
     @ResponseBody
     @PostMapping(value="/ocr")
-    public String Ocr(@RequestParam("image") MultipartFile file) {
-        System.out.println(file);
-        homeService.Ocr(file);
+    public String Ocr() {
+        homeService.Ocr();
         return "ocr";
+    }
+    @GetMapping("/getOcrResult")
+    public String getOcrResult() {
+        String ocrResult = homeService.Ocr(); // Call your OCR method here
+        return ocrResult;
     }
 }
