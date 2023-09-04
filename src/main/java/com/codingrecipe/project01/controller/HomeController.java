@@ -35,4 +35,12 @@ public class HomeController {
         homeService.uploadImage(file);
         return "shot";
     }
+
+    @ResponseBody
+    @PostMapping(value="/ocr")
+    public String Ocr(@RequestParam("image") MultipartFile file) {
+        System.out.println(file);
+        homeService.Ocr(file);
+        return "ocr";
+    }
 }

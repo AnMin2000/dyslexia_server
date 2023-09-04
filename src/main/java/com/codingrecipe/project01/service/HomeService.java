@@ -39,14 +39,14 @@ public class HomeService {
             fileOutputStream.write(file.getBytes());
             fileOutputStream.close();
 
-            String ocrResult = performOCR(imageFile);
-
-            System.out.println(ocrResult);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    private String performOCR(File imageFile) {
+    public String Ocr(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        File imageFile = new File(uploadPath + File.separator + fileName);
+
         ITesseract tesseract = new Tesseract();
 
         // Tesseract OCR의 데이터 파일이 위치한 리소스 경로를 설정
@@ -58,6 +58,7 @@ public class HomeService {
 
         try {
             String ocrResult = tesseract.doOCR(imageFile);
+            System.out.println(ocrResult);
             return ocrResult;
         } catch (TesseractException e) {
             throw new RuntimeException("OCR processing error", e);
