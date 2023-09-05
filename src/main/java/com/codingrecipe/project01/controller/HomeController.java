@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 
 /**
  * Handles requests for the application home page.
@@ -39,5 +41,15 @@ public class HomeController {
         data.setData(ocrResult);
         // MyData 객체를 JSON 형식으로 자동으로 변환해서 반환합니다.
         return data;
+    }
+
+    @PostMapping("/summarize")
+    public String summarizeText() throws IOException {
+
+        System.out.println("sdfsdf");
+        String inputText = "'안녕하세요 오늘은 날씨가 매우 좋아서 집에 오는 길에 빵을 사왔어' 요약해줘";
+        String result = homeService.summarizeText(inputText);
+        System.out.println(result);
+        return "success";
     }
 }

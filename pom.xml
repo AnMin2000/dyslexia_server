@@ -17,8 +17,15 @@
     <org.slf4j-version>1.7.25</org.slf4j-version>
   </properties>
 
+
   <dependencies>
     <!-- Spring -->
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.9.1</version> <!-- 현재 버전에 맞게 업데이트 -->
+    </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
