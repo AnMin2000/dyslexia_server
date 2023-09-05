@@ -44,7 +44,7 @@ public class HomeService {
             throw new RuntimeException(e);
         }
     }
-    public String Ocr() {
+    public String ocr() {
 
         ITesseract tesseract = new Tesseract();
 
