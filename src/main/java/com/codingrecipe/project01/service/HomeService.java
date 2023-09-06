@@ -7,6 +7,7 @@ import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import okhttp3.*;
+import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,18 +19,29 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+
+
 @Service
 @RequiredArgsConstructor
 public class HomeService {
     private final HomeRepository homeRepository;
     File imageFile;
-    public void insert(User user){
+
+    public void insert(User user) {
         System.out.println("id2: " + user.getId() + ", pw: " + user.getPassword());
         homeRepository.insert(user);
     }
 
     @Value("C:/Users/user/Desktop/Album/")
     private String uploadPath;
+
     public void uploadImage(MultipartFile file) {
         try {
             // 이미지를 서버에 저장
@@ -45,6 +57,7 @@ public class HomeService {
             throw new RuntimeException(e);
         }
     }
+
     public String ocr() {
 
         ITesseract tesseract = new Tesseract();
@@ -65,30 +78,51 @@ public class HomeService {
         }
     }
 
-    private static final String API_KEY = "";
-    private static final String GPT_API_URL = "https://api.openai.com/v1/engines/davinci/completions";
+    public String summarizeText(String inputText) {
+        // API 엑세스 토큰
+        String apiKey = "";
 
+        // API 엔드포인트 URL
+        String apiUrl = "https://api.openai.com/v1/chat/completions";
 
-    private final OkHttpClient client = new OkHttpClient();
+        // JSON 요청 본문
+        String jsonRequest = "{\n" +
+                "    \"model\": \"gpt-3.5-turbo\",\n" +
+                "    \"messages\": [\n" +
+                "        {\n" +
+                "            \"role\": \"user\",\n" +
+                "            \"content\": \"chatgpt가 뭐야?\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
 
-    public String summarizeText(String inputText) throws IOException {
-        MediaType mediaType = MediaType.parse("application/json");
-       // inputText = "'안녕하세요 오늘은 날씨가 매우 좋아서 집에 오는 길에 빵을 사왔어' 요약해줘";
-        //String requestBody = "{\"prompt\":\"" + "안녕하세요" + "\",\"max_tokens\":50}";
-        String requestBody = "{\"prompt\":\"" + inputText + "\",\"max_tokens\":100}";
-        Request request = new Request.Builder()
-                .url(GPT_API_URL)
-                .post(RequestBody.create(mediaType, requestBody))
-                .addHeader("Authorization", "Bearer " + API_KEY)
-                .build();
+        // HttpClient 초기화
+        HttpClient httpClient = HttpClients.createDefault();
 
-        try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful() && response.body() != null) {
-                return response.body().string();
-            } else {
-                throw new IOException("Failed to summarize text: " + response.code());
-            }
+        // HTTP POST 요청 생성
+        HttpPost httpPost = new HttpPost(apiUrl);
+
+        // 요청 헤더 설정
+        httpPost.setHeader("Content-Type", "application/json");
+        httpPost.setHeader("Authorization", "Bearer " + apiKey);
+
+        String jsonResponse = null;
+        try {
+            // JSON 요청 본문 설정 및 UTF-8 인코딩 지정
+            StringEntity entity = new StringEntity(jsonRequest, "UTF-8");
+            httpPost.setEntity(entity);
+
+            // HTTP 요청 실행
+            HttpResponse response = httpClient.execute(httpPost);
+
+            // HTTP 응답을 문자열로 변환
+            HttpEntity responseEntity = response.getEntity();
+            jsonResponse = EntityUtils.toString(responseEntity, "UTF-8");
+            //System.out.println(jsonResponse);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return jsonResponse;
     }
-
 }

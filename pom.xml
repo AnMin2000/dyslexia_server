@@ -20,6 +20,13 @@
 
   <dependencies>
     <!-- Spring -->
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.14</version> <!-- 사용 가능한 최신 버전으로 업데이트하세요 -->
+    </dependency>
+
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
