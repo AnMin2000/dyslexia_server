@@ -57,7 +57,6 @@ public class HomeService {
             throw new RuntimeException(e);
         }
     }
-
     public String ocr() {
 
         ITesseract tesseract = new Tesseract();
@@ -71,14 +70,16 @@ public class HomeService {
 
         try {
             String ocrResult = tesseract.doOCR(imageFile);
-            System.out.println(ocrResult);
             return ocrResult;
         } catch (TesseractException e) {
             throw new RuntimeException("OCR processing error", e);
         }
     }
 
-    public String summarizeText(String inputText) {
+    public String summarizeText(String originText) {
+
+        String input = originText.trim();
+        input += " 라는말 요약해줘";
         // API 엑세스 토큰
         String apiKey = "";
 
@@ -91,7 +92,7 @@ public class HomeService {
                 "    \"messages\": [\n" +
                 "        {\n" +
                 "            \"role\": \"user\",\n" +
-                "            \"content\": \"chatgpt가 뭐야?\"\n" +
+                "            \"content\": \"" + input + "\"\n" +
                 "        }\n" +
                 "    ]\n" +
                 "}";
