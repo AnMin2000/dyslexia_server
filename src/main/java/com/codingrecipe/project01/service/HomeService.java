@@ -58,28 +58,33 @@ public class HomeService {
         }
     }
     public String ocr() {
-
-        ITesseract tesseract = new Tesseract();
-
-        // Tesseract OCR의 데이터 파일이 위치한 리소스 경로를 설정
-        String tessDataPath = "C:/Program Files/Tesseract-OCR/tessdata";
-        tesseract.setDatapath(tessDataPath);
-
-        // 한국어 언어 설정
-        tesseract.setLanguage("kor");
-
         try {
+            // 이미지를 File로 저장
+
+            ITesseract tesseract = new Tesseract();
+
+            // Tesseract OCR의 데이터 파일이 위치한 리소스 경로를 설정
+            String tessDataPath = "C:/Program Files/Tesseract-OCR/tessdata";
+            tesseract.setDatapath(tessDataPath);
+
+            // 한국어 언어 설정
+            tesseract.setLanguage("kor");
+
             String ocrResult = tesseract.doOCR(imageFile);
-            return ocrResult;
+
+            // OCR 결과에서 줄 바꿈 및 공백 제거하여 텍스트 연결
+            ocrResult = ocrResult.replaceAll("\\n", " ").replaceAll("\\s+", " ");
+
+            return ocrResult.trim(); // 문자열 앞뒤의 공백 제거
         } catch (TesseractException e) {
             throw new RuntimeException("OCR processing error", e);
         }
     }
 
-    public String summarizeText(String originText) {
-
-        String input = originText.trim();
+    public String summarizeText(String input) {
+        System.out.println(input);
         input += " 라는말 요약해줘";
+
         // API 엑세스 토큰
         String apiKey = "";
 

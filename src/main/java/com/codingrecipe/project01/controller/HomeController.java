@@ -47,7 +47,8 @@ public class HomeController {
     public String summarizeText(@RequestBody OcrData data) throws IOException {
 
         //System.out.println(data.getData());
-       // String inputText = "'안녕하세요 오늘은 날씨가 매우 좋아서 집에 오는 길에 빵을 사왔어' 요약해줘";
+       // String inputText = "'안녕하세요 오늘은 날씨가 매우 좋아서 집에 오는 길에 빵을 사왔어'";
+        //String result = homeService.summarizeText(inputText);
         String result = homeService.summarizeText(data.getData());
         System.out.println(result);
         return "success";
