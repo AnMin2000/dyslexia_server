@@ -1,6 +1,7 @@
 package com.codingrecipe.project01.controller;
 
 import com.codingrecipe.project01.dto.OcrData;
+import com.codingrecipe.project01.dto.Summarize;
 import com.codingrecipe.project01.dto.User;
 import com.codingrecipe.project01.service.HomeService;
 import lombok.RequiredArgsConstructor;
@@ -44,14 +45,16 @@ public class HomeController {
     }
 
     @PostMapping("/summarize")
-    public String summarizeText(@RequestBody OcrData data) throws IOException {
+    public Summarize summarizeText(@RequestBody OcrData data) throws IOException {
 
         //System.out.println(data.getData());
        // String inputText = "'안녕하세요 오늘은 날씨가 매우 좋아서 집에 오는 길에 빵을 사왔어'";
         //String result = homeService.summarizeText(inputText);
         String result = homeService.summarizeText(data.getData());
-        System.out.println(result);
-        return "success";
+        //System.out.println(result);
+        Summarize data2 = new Summarize();
+        data2.setData2(result);
+        return data2;
     }
 //    @PostMapping("/summarize")
 //    public String summarizeText() throws IOException {
