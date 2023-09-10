@@ -8,6 +8,6 @@ import lombok.ToString;
 @Getter
 @Setter
 public class User { //DB에서 데이터를 받아오는 패키지
-    private String id; // _id로 지정
-    private String password;
+    private String name, phone, id, password; // _id로 지정
+
 }

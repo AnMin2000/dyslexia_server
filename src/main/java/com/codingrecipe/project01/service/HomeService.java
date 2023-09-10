@@ -83,7 +83,7 @@ public class HomeService {
 
     public String summarizeText(String input) {
         System.out.println(input);
-        input += " 라는말 요약해줘";
+        input += " 라는말 20글자 이내로 요약해줘";
 
         // API 엑세스 토큰
         String apiKey = "";
