@@ -23,9 +23,24 @@ public class HomeController {
 
     @PostMapping(value="/insert")
     public String insert(@RequestBody User user){
-        System.out.println("id1: " + user.getId() + ", pw: " + user.getPassword());
+
         homeService.insert(user);
         return "insert";
+    }
+
+    @PostMapping(value="/login")
+    public int login(@RequestBody User user){
+
+       int count =  homeService.login(user);
+       return count;
+    }
+
+    @PostMapping(value="/search")
+    public User search(@RequestBody User user){
+
+         homeService.search(user);
+        System.out.println(user.getPassword());
+        return user;
     }
 
     @PostMapping(value="/shot")

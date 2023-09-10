@@ -35,8 +35,19 @@ public class HomeService {
     File imageFile;
 
     public void insert(User user) {
-        System.out.println("id2: " + user.getId() + ", pw: " + user.getPassword());
+
         homeRepository.insert(user);
+    }
+    public int login(User user) {
+
+        int count = homeRepository.login(user);
+
+        return count;
+    }
+    public void search(User user) {
+
+       homeRepository.search(user);
+
     }
 
     @Value("C:/Users/user/Desktop/Album/")

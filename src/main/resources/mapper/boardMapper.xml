@@ -6,4 +6,18 @@
         insert into user(name, phone, id,password)
         values(#{name}, #{phone}, #{id}, #{password})
     </insert>
+
+    <select id="login" resultType="int" parameterType="board">
+        SELECT COUNT(*)
+        FROM user
+        WHERE id = #{id} AND password = #{password}
+    </select>
+
+    <select id="search" resultType="String" parameterType="board">
+        SELECT password
+        FROM user
+        WHERE name = #{name} AND phone = #{phone}
+    </select>
+
+
 </mapper>
