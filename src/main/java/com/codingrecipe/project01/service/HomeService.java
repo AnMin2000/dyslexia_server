@@ -1,12 +1,14 @@
 package com.codingrecipe.project01.service;
 
+import com.codingrecipe.project01.dto.Album;
+import com.codingrecipe.project01.dto.Picture;
+import com.codingrecipe.project01.dto.Text;
 import com.codingrecipe.project01.dto.User;
 import com.codingrecipe.project01.repository.HomeRepository;
 import lombok.RequiredArgsConstructor;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
-import okhttp3.*;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -26,7 +27,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +39,12 @@ public class HomeService {
 
     public void insert(User user) {
 
-        homeRepository.insert(user);
+        Album album = new Album();
+
+        album.setAlbumID(user.getId()+"*");
+        album.setUserID(user.getId());
+
+        homeRepository.insert(user, album);
     }
     public int login(User user) {
 
@@ -53,7 +61,7 @@ public class HomeService {
     @Value("C:/Users/user/Desktop/Album/")
     private String uploadPath;
 
-    public void uploadImage(MultipartFile file) {
+    public void uploadImage(MultipartFile file, String id) {
         try {
             // 이미지를 서버에 저장
             String fileName = file.getOriginalFilename();
@@ -64,11 +72,30 @@ public class HomeService {
             fileOutputStream.close();
 
 
+            // 이미지 파일의 저장 날짜 가져오기
+            Date lastModifiedDate = new Date(imageFile.lastModified());
+
+            // SimpleDateFormat을 사용하여 날짜 및 시간 형식 지정
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = dateFormat.format(lastModifiedDate);
+
+            // 이미지 파일의 저장 날짜를 출력
+            System.out.println("이미지 파일의 저장 날짜: " + formattedDateTime);
+//            System.out.println("파일 경로 : " + uploadPath+fileName);
+            Picture picture = new Picture();
+
+            picture.setPictureID(fileName);
+            picture.setRoute(uploadPath+fileName);
+            picture.setDate(formattedDateTime);
+            picture.setAlbumID(id+"*");
+
+            homeRepository.uploadImage(picture);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public String ocr() {
+    public String ocr(String id, String fileName) {
         try {
             // 이미지를 File로 저장
 
@@ -86,7 +113,26 @@ public class HomeService {
             // OCR 결과에서 줄 바꿈 및 공백 제거하여 텍스트 연결
             ocrResult = ocrResult.replaceAll("\\n", " ").replaceAll("\\s+", " ");
 
-            return ocrResult.trim(); // 문자열 앞뒤의 공백 제거
+
+            String finalResult = ocrResult.trim();// 문자열 앞뒤의 공백 제거
+
+
+            Date today = new Date();
+            Locale currentLocale = new Locale("KOREAN", "KOREA");
+            String pattern = "yyyyMMddHHmmss"; //hhmmss로 시간,분,초만 뽑기도 가능
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern, currentLocale);
+
+            String time = formatter.format(today);
+
+            Text text = new Text();
+
+            text.setTextID(id + ":" + time);
+            text.setText(finalResult);
+            text.setDate(time);
+            text.setPictureID(fileName); //이거 말고 pictureID로 갖고 와야함
+
+            homeRepository.ocr(text);
+            return finalResult;
         } catch (TesseractException e) {
             throw new RuntimeException("OCR processing error", e);
         }
@@ -142,4 +188,5 @@ public class HomeService {
         }
         return jsonResponse;
     }
+
 }

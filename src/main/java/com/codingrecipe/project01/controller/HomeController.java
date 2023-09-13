@@ -1,14 +1,13 @@
 package com.codingrecipe.project01.controller;
 
 import com.codingrecipe.project01.dto.OcrData;
+import com.codingrecipe.project01.dto.Picture;
 import com.codingrecipe.project01.dto.Summarize;
 import com.codingrecipe.project01.dto.User;
 import com.codingrecipe.project01.service.HomeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 
 /**
@@ -44,15 +43,18 @@ public class HomeController {
     }
 
     @PostMapping(value="/shot")
-    public String uploadImage(@RequestParam("image") MultipartFile file) {
-        System.out.println(file);
-        homeService.uploadImage(file);
+    public String uploadImage(
+            @RequestParam("image") MultipartFile file,
+            @RequestParam("id") String id
+    ) {
+        homeService.uploadImage(file, id);
         return "shot";
     }
 
     @PostMapping("/ocr")
-    public OcrData ocr() {
-        String ocrResult = homeService.ocr();
+    public OcrData ocr(@RequestBody String id, @RequestBody String fileName) {
+        String ocrResult = homeService.ocr(id,fileName);
+
         OcrData data = new OcrData();
         data.setData(ocrResult);
         // MyData 객체를 JSON 형식으로 자동으로 변환해서 반환합니다.
@@ -60,24 +62,11 @@ public class HomeController {
     }
 
     @PostMapping("/summarize")
-    public Summarize summarizeText(@RequestBody OcrData data) throws IOException {
+    public Summarize summarizeText(@RequestBody OcrData data)  {
 
-        //System.out.println(data.getData());
-       // String inputText = "'안녕하세요 오늘은 날씨가 매우 좋아서 집에 오는 길에 빵을 사왔어'";
-        //String result = homeService.summarizeText(inputText);
         String result = homeService.summarizeText(data.getData());
-        //System.out.println(result);
         Summarize data2 = new Summarize();
         data2.setData2(result);
         return data2;
     }
-//    @PostMapping("/summarize")
-//    public String summarizeText() throws IOException {
-//
-//        System.out.println("sdfsdf");
-//        String inputText = "'안녕하세요 오늘은 날씨가 매우 좋아서 집에 오는 길에 빵을 사왔어' 요약해줘";
-//        String result = homeService.summarizeText(inputText);
-//        System.out.println(result);
-//        return "success";
-//    }
 }
