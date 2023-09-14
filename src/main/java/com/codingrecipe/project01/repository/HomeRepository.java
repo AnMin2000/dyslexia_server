@@ -1,9 +1,6 @@
 package com.codingrecipe.project01.repository;
 
-import com.codingrecipe.project01.dto.Album;
-import com.codingrecipe.project01.dto.Picture;
-import com.codingrecipe.project01.dto.Text;
-import com.codingrecipe.project01.dto.User;
+import com.codingrecipe.project01.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -42,13 +39,12 @@ public class HomeRepository { // 레포지토리 구성은 여러가지가 있�
     }
 
     public void ocr(Text text){
-        System.out.println(
-                text.getTextID() +" : "+
-                        text.getPictureID()+" : "+
-                        text.getDate()+" : "+
-                        text.getText()
-        );
+
         sql.insert("Board.text", text);
     }
 
+    public void summarizeText(SumDB sumDB) {
+
+        sql.insert("Board.summarize", sumDB);
+    }
 }

@@ -1,9 +1,6 @@
 package com.codingrecipe.project01.service;
 
-import com.codingrecipe.project01.dto.Album;
-import com.codingrecipe.project01.dto.Picture;
-import com.codingrecipe.project01.dto.Text;
-import com.codingrecipe.project01.dto.User;
+import com.codingrecipe.project01.dto.*;
 import com.codingrecipe.project01.repository.HomeRepository;
 import lombok.RequiredArgsConstructor;
 import net.sourceforge.tess4j.ITesseract;
@@ -13,7 +10,7 @@ import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -138,8 +135,8 @@ public class HomeService {
         }
     }
 
-    public String summarizeText(String input) {
-        System.out.println(input);
+    public String summarizeText(String id, String pictureID,String input) {
+       // System.out.println(input);
         input += " 라는말 20글자 이내로 요약해줘";
 
         // API 엑세스 토큰
@@ -186,7 +183,44 @@ public class HomeService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return jsonResponse;
-    }
 
+        Date today = new Date();
+        Locale currentLocale = new Locale("KOREAN", "KOREA");
+        String pattern = "yyyyMMddHHmmss"; //hhmmss로 시간,분,초만 뽑기도 가능
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern, currentLocale);
+
+        String time = formatter.format(today);
+
+        SumDB sumDB = new SumDB();
+
+        String content = extractContentFromJson(jsonResponse);
+       // System.out.println(content);
+        sumDB.setSumID(id+":"+time);
+        sumDB.setSummary(content);
+        sumDB.setDate(time);
+        sumDB.setPictureID(pictureID);
+
+        homeRepository.summarizeText(sumDB);
+        return content;
+    }
+    public String extractContentFromJson(String jsonResponse) {
+        String content = null;
+
+        try {
+            // JSON 문자열을 JSONObject로 파싱
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+
+            // "choices" 배열에서 첫 번째 요소의 "message" 객체를 가져옴
+            JSONObject messageObject = jsonObject.getJSONArray("choices")
+                    .getJSONObject(0)
+                    .getJSONObject("message");
+
+            // "content" 필드의 값을 추출
+            content = messageObject.getString("content");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return content;
+    }
 }

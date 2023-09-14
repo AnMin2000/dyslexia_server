@@ -34,5 +34,10 @@
     values(#{textID}, #{text}, #{date}, #{pictureID})
     </insert>
 
+    <insert id="summarize" parameterType="board">#-- mybatis-config에서 약칭 사용가능 , "board"처럼 명시
+    insert into summarize(sumID, summary, date, pictureID)
+    values(#{sumID}, #{summary}, #{date}, #{pictureID})
+    </insert>
+
 
 </mapper>

@@ -20,6 +20,11 @@
 
   <dependencies>
     <!-- Spring -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20230618</version> <!-- 또는 최신 버전 -->
+    </dependency>
 
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OcrData {
+    private String pictureID, id;
 
     @SerializedName("data")
     private String data;

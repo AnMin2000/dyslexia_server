@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 
 /**
  * Handles requests for the application home page.
@@ -52,7 +54,10 @@ public class HomeController {
     }
 
     @PostMapping("/ocr")
-    public OcrData ocr(@RequestBody String id, @RequestBody String fileName) {
+    public OcrData ocr(@RequestBody Map<String, String> requestBody) {
+
+        String id = requestBody.get("id");
+        String fileName = requestBody.get("fileName");
         String ocrResult = homeService.ocr(id,fileName);
 
         OcrData data = new OcrData();
@@ -63,8 +68,14 @@ public class HomeController {
 
     @PostMapping("/summarize")
     public Summarize summarizeText(@RequestBody OcrData data)  {
+        String id = data.getId();
+        String pictureID = data.getPictureID();
+        String ocrText = data.getData();
 
-        String result = homeService.summarizeText(data.getData());
+//        System.out.println(id + "**" +
+//                pictureID + "**" +
+//                ocrText);
+        String result = homeService.summarizeText(id,pictureID,ocrText);
         Summarize data2 = new Summarize();
         data2.setData2(result);
         return data2;
