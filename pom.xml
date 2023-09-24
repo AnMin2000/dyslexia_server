@@ -21,6 +21,12 @@
   <dependencies>
     <!-- Spring -->
     <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.5.4</version> <!-- 사용 가능한 최신 버전으로 업데이트 -->
+    </dependency>
+
+    <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20230618</version> <!-- 또는 최신 버전 -->
