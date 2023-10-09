@@ -22,19 +22,6 @@ public class PhotoController {
             "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
             "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
             "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
-            "C:/Users/user/Desktop/Album/JPEG_20230911.jpg",
             "C:/Users/user/Desktop/Album/JPEG_20230911.jpg"
             // 다른 이미지 경로도 추가 가능
     };
